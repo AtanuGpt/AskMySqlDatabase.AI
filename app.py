@@ -11,7 +11,7 @@ import os
 
 load_dotenv()
 
-llm = ChatOpenAI(model="gpt-3.5-turbo")
+llm = ChatOpenAI(model="gpt-4o") #gpt-4ogpt-3.5-turbo
 
 def init_database(user: str, password: str, host: str, database: str):
   db_user_encoded = quote_plus(user)
