@@ -11,6 +11,8 @@ import os
 
 load_dotenv()
 
+llm = ChatOpenAI(model="gpt-3.5-turbo")
+
 def init_database(user: str, password: str, host: str, database: str):
   db_user_encoded = quote_plus(user)
   db_password_encoded = quote_plus(password)
@@ -41,9 +43,7 @@ def get_sql_chain(db):
     SQL Query:
     """
     
-  prompt = ChatPromptTemplate.from_template(template)
-  
-  llm = ChatOpenAI(model="gpt-3.5-turbo")
+  prompt = ChatPromptTemplate.from_template(template) 
   
   def get_schema(_):
     return db.get_table_info()
@@ -70,8 +70,6 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
   
   prompt = ChatPromptTemplate.from_template(template)
   
-  llm = ChatOpenAI(model="gpt-3.5-turbo")
-  
   chain = (
     RunnablePassthrough.assign(query=sql_chain).assign(
       schema=lambda _: db.get_table_info(),
@@ -92,8 +90,6 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
       AIMessage(content="Hello! I'm a SQL assistant. Ask me anything about your database."),
     ]
-
-load_dotenv()
 
 st.set_page_config(page_title="Chat with MySQL", page_icon=":speech_balloon:")
 
